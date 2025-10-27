@@ -1,14 +1,16 @@
 import java.util.*;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*;// library ที่ใช้ในการสร้าง GUI ด้วย Swing
+import java.awt.*;// library ที่ใช้ในการสร้าง GUI
+import java.awt.event.*;// library ที่ใช้จัดการ event ต่างๆ
 
-// Class 1: Person - stores individual expense data
+// Class 1: Person - stores individual expense data (Encapsulation)
 class Person {
     private String name;
     private double amount;
 
+    // ตรงนี้จะเป็น Constructor
     public Person(String name, double amount) {
+        // คำสั่ง this จะชี้ไปยัง attribute ของ class Person
         this.name = name;
         this.amount = amount;
     }
@@ -37,7 +39,11 @@ class ExpenseCalculator {
 
     // Calculation Function 1: Calculate total expenses
     public double calculateTotal() {
-        return people.stream().mapToDouble(Person::getAmount).sum();
+        double total = 0.0;
+        for (Person person : people) {
+            total += person.getAmount();
+        }
+        return total;
     }
 
     // Calculation Function 2: Calculate average per person
@@ -141,17 +147,21 @@ class ReportGenerator {
 
 // Class 4: Main GUI Application with Menu Functions
 public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListener {
-    private ArrayList<Person> people;
-    private ExpenseCalculator calculator;
-    private ReportGenerator reportGenerator;
+    private ArrayList<Person> people; // เป็น Object ตัวหลัก ArrayList ที่เก็บข้อมูล Person และถูกส่งไปยัง
+                                      // ExpenseCalculator และ ReportGenerator
+    private ExpenseCalculator calculator; // สร้าง instance ของ ExpenseCalculator
+    private ReportGenerator reportGenerator; // สร้าง instance ของ ReportGenerator
 
     // GUI Components
-    private JTextField nameField, amountField;
-    private JTextArea resultArea;
+    private JTextField nameField, amountField; // ตัวรับ input ชื่อ และเงินที่จ่าย
+    private JTextArea resultArea; // ส่วนแสดงผลลัพธ์ต่างๆ
+
+    // 2 ตัวนี้เป็นส่วนที่ใช้แสดงรายชื่อคนที่เพิ่มเข้ามา ListModel เปรียบเสมือน
+    // Container ที่เก็บข้อมูลสำหรับ JList ส่วน Jlist จะเป็นตัวแสดงผล
     private JList<String> personList;
     private DefaultListModel<String> listModel;
 
-    // Menu Buttons (4+ Menu Functions)
+    // Menu Buttons
     private JButton addBtn, removeBtn, calculateBtn, statsBtn, detailBtn, summaryBtn, clearBtn;
 
     public EnhancedTravelExpenseSplitter() {
@@ -161,6 +171,7 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
         setupGUI();
     }
 
+    /*********************** Method สร้าง GUI **************************/
     private void setupGUI() {
         setTitle("💰 Enhanced Travel Expense Splitter");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -245,6 +256,9 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
         setVisible(true);
     }
 
+    /*********************** Method สร้าง GUI **************************/
+
+    /*********************** Method สร้าง Button **************************/
     private JButton createButton(String text, Color color) {
         JButton button = new JButton(text);
         button.setBackground(color);
@@ -253,6 +267,8 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
         button.addActionListener(this);
         return button;
     }
+
+    /*********************** Method สร้าง Button **************************/
 
     // Action Handler for Menu Functions
     public void actionPerformed(ActionEvent e) {
@@ -330,9 +346,9 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
     }
 
     private void updateDisplay() {
-        listModel.clear();
-        for (Person person : people) {
-            listModel.addElement(person.toString());
+        listModel.clear(); // clear() ก่อนเพิ่มข้อมูลใหม่ ข้อมูลจะได้ไม่ซ้ำกัน
+        for (Person person : people) { // เพิ่มข้อมูลใหม่ลงใน listModel ด้วยการวนลูป
+            listModel.addElement(person.toString()); // เพิ่มข้อมูลใหม่ลงใน listModel ผ่าน method addElement()
         }
 
         // Update calculator and report generator references
