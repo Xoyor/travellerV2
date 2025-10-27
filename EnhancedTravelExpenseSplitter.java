@@ -7,12 +7,10 @@ import java.awt.event.*;
 class Person {
     private String name;
     private double amount;
-    private String category;
 
-    public Person(String name, double amount, String category) {
+    public Person(String name, double amount) {
         this.name = name;
         this.amount = amount;
-        this.category = category;
     }
 
     public String getName() {
@@ -23,13 +21,9 @@ class Person {
         return amount;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
     @Override
     public String toString() {
-        return name + " - " + String.format("%.2f", amount) + " ฿ (" + category + ")";
+        return name + " - " + String.format("%.2f", amount) + " ฿";
     }
 }
 
@@ -124,21 +118,21 @@ class ReportGenerator {
         return report.toString();
     }
 
-    public String generateCategoryReport() {
+    public String generateSummaryReport() {
         if (people.isEmpty())
-            return "No data for category report.";
+            return "No data for summary report.";
 
-        Map<String, Double> categoryTotals = new HashMap<>();
-        for (Person p : people) {
-            categoryTotals.merge(p.getCategory(), p.getAmount(), Double::sum);
-        }
-
+        ExpenseCalculator calc = new ExpenseCalculator(people);
         StringBuilder report = new StringBuilder();
-        report.append("📈 CATEGORY BREAKDOWN 📈\n\n");
+        report.append("� EXPENSE SUMMARY �\n\n");
 
-        for (Map.Entry<String, Double> entry : categoryTotals.entrySet()) {
-            report.append(entry.getKey()).append(": ")
-                    .append(String.format("%.2f", entry.getValue())).append(" ฿\n");
+        report.append("Total Participants: ").append(people.size()).append("\n");
+        report.append("Total Expenses: ").append(String.format("%.2f", calc.calculateTotal())).append(" ฿\n");
+        report.append("Average per Person: ").append(String.format("%.2f", calc.calculateAverage())).append(" ฿\n\n");
+
+        report.append("All Expenses:\n");
+        for (Person p : people) {
+            report.append("• ").append(p.toString()).append("\n");
         }
 
         return report.toString();
@@ -153,13 +147,12 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
 
     // GUI Components
     private JTextField nameField, amountField;
-    private JComboBox<String> categoryBox;
     private JTextArea resultArea;
     private JList<String> personList;
     private DefaultListModel<String> listModel;
 
     // Menu Buttons (4+ Menu Functions)
-    private JButton addBtn, removeBtn, calculateBtn, statsBtn, detailBtn, categoryBtn, clearBtn;
+    private JButton addBtn, removeBtn, calculateBtn, statsBtn, detailBtn, summaryBtn, clearBtn;
 
     public EnhancedTravelExpenseSplitter() {
         people = new ArrayList<>();
@@ -192,14 +185,6 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
         });
         amountField = new JTextField(8);
         inputPanel.add(amountField);
-
-        inputPanel.add(new JLabel("📁 Category:") {
-            {
-                setForeground(Color.WHITE);
-            }
-        });
-        categoryBox = new JComboBox<>(new String[] { "Food", "Transport", "Accommodation", "Other" });
-        inputPanel.add(categoryBox);
 
         add(inputPanel, BorderLayout.NORTH);
 
@@ -239,7 +224,7 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
 
         // Row 2: Report Functions
         detailBtn = createButton("📋 Detail Report", new Color(138, 43, 226)); // Menu Function 3
-        categoryBtn = createButton("📁 Category Report", new Color(50, 205, 50)); // Menu Function 4
+        summaryBtn = createButton("� Summary Report", new Color(50, 205, 50)); // Menu Function 4
         clearBtn = createButton("🔄 Clear All", new Color(178, 34, 34));
         JButton exitBtn = createButton("🚪 Exit", new Color(128, 128, 128));
         exitBtn.addActionListener(e -> System.exit(0));
@@ -249,7 +234,7 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
         menuPanel.add(calculateBtn);
         menuPanel.add(statsBtn);
         menuPanel.add(detailBtn);
-        menuPanel.add(categoryBtn);
+        menuPanel.add(summaryBtn);
         menuPanel.add(clearBtn);
         menuPanel.add(exitBtn);
 
@@ -284,9 +269,9 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
         } else if (e.getSource() == detailBtn) {
             // Menu Function 3: Detail Report
             resultArea.setText(reportGenerator.generateDetailedReport());
-        } else if (e.getSource() == categoryBtn) {
-            // Menu Function 4: Category Report
-            resultArea.setText(reportGenerator.generateCategoryReport());
+        } else if (e.getSource() == summaryBtn) {
+            // Menu Function 4: Summary Report
+            resultArea.setText(reportGenerator.generateSummaryReport());
         } else if (e.getSource() == clearBtn) {
             clearAll();
         }
@@ -297,7 +282,6 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
         try {
             String name = nameField.getText().trim();
             String amountText = amountField.getText().trim();
-            String category = (String) categoryBox.getSelectedItem();
 
             if (name.isEmpty() || amountText.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Please enter both name and amount!");
@@ -310,7 +294,7 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
                 return;
             }
 
-            Person person = new Person(name, amount, category);
+            Person person = new Person(name, amount);
             people.add(person);
             updateDisplay();
 
