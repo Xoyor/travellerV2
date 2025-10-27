@@ -13,21 +13,21 @@ class Person { // เริ่มต้นคลาส Person
         // คำสั่ง this จะชี้ไปยัง attribute ของ class Person
         this.name = name; // กำหนดค่าชื่อ
         this.amount = amount; // กำหนดค่าจำนวนเงิน
-    } // ปิด constructor
+    }
 
     public String getName() { // method getter สำหรับดึงชื่อ
         return name; // คืนค่าชื่อ
-    } // ปิด method getName
+    }
 
     public double getAmount() { // method getter สำหรับดึงจำนวนเงิน
         return amount; // คืนค่าจำนวนเงิน
-    } // ปิด method getAmount
+    }
 
     @Override // annotation สำหรับ override method
     public String toString() { // method แปลง object เป็น String
         return name + " - " + String.format("%.2f", amount) + " ฿"; // คืนค่าในรูปแบบ "ชื่อ - จำนวนเงิน ฿"
-    } // ปิด method toString
-} // ปิดคลาส Person
+    }
+}
 
 // Class 2: ExpenseCalculator - handles all calculations
 class ExpenseCalculator { // เริ่มต้นคลาส ExpenseCalculator
@@ -37,16 +37,16 @@ class ExpenseCalculator { // เริ่มต้นคลาส ExpenseCalcula
     // Constructor ที่รับค่า ArrayList<Person> people จาก class หลัก
     public ExpenseCalculator(ArrayList<Person> people) { // รับพารามิเตอร์ ArrayList ของ Person
         this.people = people; // กำหนดค่า ArrayList ที่รับมา
-    } // ปิด constructor
+    }
 
     // Calculation Function 1: Calculate total expenses
     public double calculateTotal() { // method คำนวณยอดรวม
         double total = 0.0; // ตัวแปรเก็บยอดรวม เริ่มต้นที่ 0
         for (Person person : people) { // วนลูปผ่านแต่ละคนในรายการ
             total += person.getAmount(); // บวกจำนวนเงินของแต่ละคนเข้าไปในยอดรวม
-        } // ปิดลูป for
+        }
         return total; // คืนค่ายอดรวม
-    } // ปิด method calculateTotal
+    }
 
     // Calculation Function 2: Calculate average per person
     public double calculateAverage() { // method คำนวณค่าเฉลี่ย
@@ -56,7 +56,7 @@ class ExpenseCalculator { // เริ่มต้นคลาส ExpenseCalcula
         // CalculateTotal()(เงินรวมทั้งหมด) / people.size()(จำนวนคน)
         // ถ้าเป็น true จะ return 0
         return people.isEmpty() ? 0 : calculateTotal() / people.size(); // ถ้าไม่มีข้อมูลคืนค่า 0 ไม่งั้นคืนค่าเฉลี่ย
-    } // ปิด method calculateAverage
+    }
 
     // Calculation Function 3: Calculate individual balances
     public String calculateSplit() { // method คำนวณการแบ่งค่าใช้จ่าย
@@ -79,10 +79,10 @@ class ExpenseCalculator { // เริ่มต้นคลาส ExpenseCalcula
                         .append(String.format("%.2f", -balance)).append(" ฿\n"); // แสดงว่าต้องจ่ายเพิ่ม
             } else { // ถ้าจ่ายพอดีค่าเฉลี่ย
                 result.append("✅ ").append(p.getName()).append(" is settled\n"); // แสดงว่าจ่ายครบแล้ว
-            } // ปิด else
-        } // ปิดลูป for
+            }
+        }
         return result.toString(); // คืนค่าผลลัพธ์ในรูปแบบ String
-    } // ปิด method calculateSplit
+    }
 
     // Calculation Function 4: Calculate statistics
     public String calculateStatistics() { // method คำนวณสถิติ
@@ -104,10 +104,10 @@ class ExpenseCalculator { // เริ่มต้นคลาส ExpenseCalcula
                     .append(String.format("%.2f", maxSpender.getAmount())).append(" ฿)\n"); // เพิ่มข้อมูลคนจ่ายมากสุด
             stats.append("Lowest: ").append(minSpender.getName()).append(" (")
                     .append(String.format("%.2f", minSpender.getAmount())).append(" ฿)\n"); // เพิ่มข้อมูลคนจ่ายน้อยสุด
-        } // ปิด if
+        }
         return stats.toString(); // คืนค่ารายงานสถิติในรูปแบบ String
-    } // ปิด method calculateStatistics
-} // ปิดคลาส ExpenseCalculator
+    }
+}
 
 // Class 3: ReportGenerator - generates various reports
 class ReportGenerator { // เริ่มต้นคลาส ReportGenerator
@@ -115,7 +115,7 @@ class ReportGenerator { // เริ่มต้นคลาส ReportGenerator
 
     public ReportGenerator(ArrayList<Person> people) { // constructor รับรายการคน
         this.people = people; // กำหนดค่า ArrayList ที่รับมา
-    } // ปิด constructor
+    }
 
     public String generateDetailedReport() { // method สร้างรายงานแบบละเอียด
         if (people.isEmpty()) // ตรวจสอบว่ามีข้อมูลหรือไม่
@@ -126,10 +126,10 @@ class ReportGenerator { // เริ่มต้นคลาส ReportGenerator
 
         for (int i = 0; i < people.size(); i++) { // วนลูปผ่านแต่ละคนด้วย index
             report.append(String.format("%d. %s\n", i + 1, people.get(i).toString())); // เพิ่มข้อมูลของแต่ละคนพร้อมหมายเลข
-        } // ปิดลูป for
+        }
 
         return report.toString(); // คืนค่ารายงานในรูปแบบ String
-    } // ปิด method generateDetailedReport
+    }
 
     public String generateSummaryReport() { // method สร้างรายงานแบบสรุป
         if (people.isEmpty()) // ตรวจสอบว่ามีข้อมูลหรือไม่
@@ -146,11 +146,11 @@ class ReportGenerator { // เริ่มต้นคลาส ReportGenerator
         report.append("All Expenses:\n"); // เพิ่มหัวข้อรายการค่าใช้จ่ายทั้งหมด
         for (Person p : people) { // วนลูปผ่านแต่ละคน
             report.append("• ").append(p.toString()).append("\n"); // เพิ่มข้อมูลของแต่ละคน
-        } // ปิดลูป for
+        }
 
         return report.toString(); // คืนค่ารายงานในรูปแบบ String
-    } // ปิด method generateSummaryReport
-} // ปิดคลาส ReportGenerator
+    }
+}
 
 // Class 4: Main GUI Application with Menu Functions
 public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListener { // คลาสหลักสำหรับ GUI
@@ -176,7 +176,7 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
         calculator = new ExpenseCalculator(people); // สร้าง instance ของ ExpenseCalculator
         reportGenerator = new ReportGenerator(people); // สร้าง instance ของ ReportGenerator
         setupGUI(); // เรียก method ตั้งค่า GUI
-    } // ปิด constructor
+    }
 
     /*********************** Method สร้าง GUI **************************/
     private void setupGUI() { // method สำหรับตั้งค่า GUI
@@ -191,7 +191,7 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
         inputPanel.add(new JLabel("👤 Name:") { // สร้าง label สำหรับชื่อ
             { // anonymous inner class
                 setForeground(Color.WHITE); // ตั้งสีตัวอักษรเป็นสีขาว
-            } // ปิด anonymous inner class
+            }
         }); // ปิดการเพิ่ม label
         nameField = new JTextField(10); // สร้าง text field สำหรับรับชื่อ
         inputPanel.add(nameField); // เพิ่ม text field เข้าไปใน panel
@@ -199,7 +199,7 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
         inputPanel.add(new JLabel("💵 Amount:") { // สร้าง label สำหรับจำนวนเงิน
             { // anonymous inner class
                 setForeground(Color.WHITE); // ตั้งสีตัวอักษรเป็นสีขาว
-            } // ปิด anonymous inner class
+            }
         }); // ปิดการเพิ่ม label
         amountField = new JTextField(8); // สร้าง text field สำหรับรับจำนวนเงิน
         inputPanel.add(amountField); // เพิ่ม text field เข้าไปใน panel
@@ -264,7 +264,7 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
         setSize(800, 600); // ตั้งขนาดหน้าต่าง
         setLocationRelativeTo(null); // ตั้งตำแหน่งให้อยู่กลางจอ
         setVisible(true); // แสดงหน้าต่าง
-    } // ปิด method setupGUI
+    }
 
     /*********************** Method สร้าง GUI **************************/
 
@@ -276,7 +276,7 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
         button.setFocusPainted(false); // ปิดการแสดง focus border
         button.addActionListener(this); // เพิ่ม action listener
         return button; // คืนค่าปุ่มที่สร้าง
-    } // ปิด method createButton
+    }
 
     /*********************** Method สร้าง Button **************************/
 
@@ -300,8 +300,8 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
             resultArea.setText(reportGenerator.generateSummaryReport()); // แสดงรายงานสรุป
         } else if (e.getSource() == clearBtn) { // ถ้าคลิกปุ่มล้างข้อมูล
             clearAll(); // เรียก method clearAll
-        } // ปิด if-else
-    } // ปิด method actionPerformed
+        }
+    }
 
     // User Input Function: Add Person
     private void addPerson() { // method สำหรับเพิ่มคน
@@ -312,13 +312,13 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
             if (name.isEmpty() || amountText.isEmpty()) { // ตรวจสอบว่าข้อมูลครบหรือไม่
                 JOptionPane.showMessageDialog(this, "Please enter both name and amount!"); // แสดงข้อความเตือน
                 return; // ออกจาก method
-            } // ปิด if
+            }
 
             double amount = Double.parseDouble(amountText); // แปลงข้อความเป็นตัวเลข
             if (amount < 0) { // ตรวจสอบว่าจำนวนเงินติดลบหรือไม่
                 JOptionPane.showMessageDialog(this, "Amount cannot be negative!"); // แสดงข้อความเตือน
                 return; // ออกจาก method
-            } // ปิด if
+            }
 
             Person person = new Person(name, amount); // สร้าง object Person ใหม่
             people.add(person); // เพิ่มคนเข้าไปใน ArrayList
@@ -331,8 +331,8 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
 
         } catch (NumberFormatException ex) { // จับ exception เมื่อแปลงตัวเลขไม่ได้
             JOptionPane.showMessageDialog(this, "Please enter a valid number for amount!"); // แสดงข้อความเตือน
-        } // ปิด catch
-    } // ปิด method addPerson
+        }
+    }
 
     private void removePerson() { // method สำหรับลบคน
         int selectedIndex = personList.getSelectedIndex(); // ดึง index ของรายการที่เลือก
@@ -341,8 +341,8 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
             updateDisplay(); // อัปเดตการแสดงผล
         } else { // ถ้าไม่ได้เลือกรายการ
             JOptionPane.showMessageDialog(this, "Please select a person to remove!"); // แสดงข้อความเตือน
-        } // ปิด else
-    } // ปิด method removePerson
+        }
+    }
 
     private void clearAll() { // method สำหรับล้างข้อมูลทั้งหมด
         int confirm = JOptionPane.showConfirmDialog(this, // แสดง dialog ยืนยัน
@@ -352,22 +352,22 @@ public class EnhancedTravelExpenseSplitter extends JFrame implements ActionListe
             people.clear(); // ล้างข้อมูลใน ArrayList
             updateDisplay(); // อัปเดตการแสดงผล
             resultArea.setText("All data cleared. Add people and expenses to start calculating."); // แสดงข้อความล้างข้อมูลเสร็จ
-        } // ปิด if
-    } // ปิด method clearAll
+        }
+    }
 
     private void updateDisplay() { // method สำหรับอัปเดตการแสดงผล
         listModel.clear(); // clear() ก่อนเพิ่มข้อมูลใหม่ ข้อมูลจะได้ไม่ซ้ำกัน
         for (Person person : people) { // เพิ่มข้อมูลใหม่ลงใน listModel ด้วยการวนลูป
             listModel.addElement(person.toString()); // เพิ่มข้อมูลใหม่ลงใน listModel ผ่าน method addElement()
-        } // ปิดลูป for
+        }
 
         // Update calculator and report generator references
         calculator = new ExpenseCalculator(people); // สร้าง instance ใหม่ของ ExpenseCalculator
         reportGenerator = new ReportGenerator(people); // สร้าง instance ใหม่ของ ReportGenerator
-    } // ปิด method updateDisplay
+    }
 
     public static void main(String[] args) { // method main สำหรับเริ่มโปรแกรม
         SwingUtilities.invokeLater(() -> new EnhancedTravelExpenseSplitter()); // สร้าง instance ของโปรแกรมใน Event
                                                                                // Dispatch Thread
-    } // ปิด method main
-} // ปิดคลาส EnhancedTravelExpenseSplitter
+    }
+}
